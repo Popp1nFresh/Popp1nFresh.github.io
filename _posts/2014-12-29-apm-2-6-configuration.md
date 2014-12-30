@@ -1,6 +1,6 @@
 ---
 layout: post
-title: APM 2.6 Configuration
+title: APM 2-6 Configuration
 ---
 
 ### Current setup
