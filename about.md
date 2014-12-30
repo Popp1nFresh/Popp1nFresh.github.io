@@ -4,7 +4,7 @@ title: About
 ---
 
 <p class="message">
-  Hey there! This Jekyll theme is based of Hyde...See below for more information.
+  Hey there! This Jekyll theme is based of Hyde. See below for more information.
 </p>
 
 TEXT TEXT TEXT
