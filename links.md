@@ -9,6 +9,9 @@ Interesting or useful links to refer back to.
 * [Hackaday](http://hackaday.com/)
 * [Ars Technica](http://arstechnica.com/)
 * [Scientific American](http://www.scientificamerican.com/)
+* [American Scientist](http://www.americanscientist.org/)
+* [New Scientist](http://www.newscientist.com/)
+* [Science News](https://www.sciencenews.org/)
 * [The Verge](http://www.theverge.com/)
 
 
@@ -22,6 +25,13 @@ Interesting or useful links to refer back to.
 ###Around the House
 * [MN Historical Society - Maps](http://collections.mnhs.org/maps/)
 
+
+###Woodworking
+* 
+
+###'Journal'
+* [Correlation != Causalityy](http://www.americanscientist.org/issues/pub/2015/1/what-everyone-should-know-about-statistical-correlation)
+* [Opinions on Science Magazines - not mine](http://boards.straightdope.com/sdmb/showthread.php?t=741276)
 
 ###Hacking for Fun
 * [Hackaday Projects](http://hackaday.io/projects)
