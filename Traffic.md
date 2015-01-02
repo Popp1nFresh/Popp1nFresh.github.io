@@ -1,6 +1,7 @@
 ---
+layout: page
+title: Traffic
 ---
-<!DOCTYPE HTML>
 <html>
 	<title>Traffic Map</title>
 	<head>
