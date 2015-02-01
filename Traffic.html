@@ -21,7 +21,6 @@
         // Create an interval to update the location
         var myInterval;
         function startTracking() {
-          counti++;
             myInterval = setInterval(function() {
               getLocation();
           }, 1000);
@@ -29,8 +28,6 @@
 
         var imageInterval = setInterval(function() {
             var d = new Date();
-            console.log('url("http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png?timestamp=' + d.getMilliseconds() +'")');
-            //$('#trafficImg').attr('src', "http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png?timestamp=" + d.getMilliseconds()+d.getHour()+d.getMinute());
             $('.trafficDiv').css('background-image', 'url("http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png?timestamp=' + d.getMilliseconds() + '")');
 
           }, 60000);
