@@ -6,7 +6,8 @@
       div { width:600px; height:740px; }
       .trafficDiv { width:600px; height:740px; float: left; background-image:url('http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png'); background-repeat: no-repeat;}
       .parentDiv { width: 1024px; height:800px; }
-
+      .tImage {float: left; position: relative;}
+      .tCanvas{float: left; position: relative;}
       canvas { float: left; }
       button { width:100px; height:75px; float:left;}
       page {max-height:800px;}
@@ -20,11 +21,20 @@
         // Create an interval to update the location
         var myInterval;
         function startTracking() {
+          counti++;
             myInterval = setInterval(function() {
-            console.log("interval");
-            getLocation();
+              getLocation();
           }, 1000);
         }
+
+        var imageInterval = setInterval(function() {
+            var d = new Date();
+            console.log('url("http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png?timestamp=' + d.getMilliseconds() +'")');
+            //$('#trafficImg').attr('src', "http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png?timestamp=" + d.getMilliseconds()+d.getHour()+d.getMinute());
+            $('.trafficDiv').css('background-image', 'url("http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png?timestamp=' + d.getMilliseconds() + '")');
+
+          }, 60000);
+
 
         $('#btnStartTrack').on('click', function() {
           startTracking();
@@ -154,8 +164,10 @@
   </head>
   <body >
       <div class="trafficDiv">
-        <canvas id="trafficCanvas" height="660"  width="600">
+
+        <canvas id="trafficCanvas" class="tCanvas" height="660"  width="600">
         </canvas>
+        <!--<img id="trafficImg" class="tImage" src="http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png?timestamp=1.1">-->
         <button id="btnStartTrack">Start Tracking</button>
         <button id="btnStopTrack">End Tracking</button>
         <br/>
