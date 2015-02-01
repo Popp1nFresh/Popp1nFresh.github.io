@@ -1,133 +1,167 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<style>
-			div { width:600px; height:740px; }
-			.trafficDiv { width:600px; height:740px; float: left}
-			.parentDiv { width: 1024px; height:800px; }
-			
-			canvas { float: left; background-image:url('http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png');}
-			button { width:100px; height:75px; float:left;}
-			page {max-height:800px;}
-		</style>
-		<script>   		
-		
-			var trackerColor = '#1996E8';
-			var exitNum = 999;
-			
-			function getLocation()
-			{				
-				if (navigator.geolocation)
-					navigator.geolocation.getCurrentPosition(drawLocation, err, {enableHighAccuracy:true, maximumAge:30000});
-				else
-					alert("You must allow location sharing.");
-			}
-			
-			function err(msg)
-			{
-				alert("Error...");
-			}
-			
-			function trackLocation()
-			{				
-				if (navigator.geolocation)
-					exitNum = navigator.geolocation.watchPosition(drawLocation, {enableHighAccuracy:true, maximumAge:30000});
-				else
-					alert("You must allow location sharing.");
-			}
-			
-			function exitTracking()
-			{
-				clearWatch(exitNum);
-			}
-			
-			// 
-			function drawLocation(position)
-			{
-				// Longitude --> north to south
-				// Latitude  --> east to west				
-				// d_map.png corners
-				var latRange = 45.343792 - 44.661469; // y
-				var lonRange = 93.587050 - 92.716381; // x
-				
-				// First
-				//      - Lat: 44.661469
-				//      - Lon: 93.58705
-				
-				// Second
-				//      - Lat: 44.661469
-				//      - Lon: 92.716381
-				
-				// Third
-				//      - Lat: 45.343792
-				//      - Lon: 92.716381
-				
-				// Fourth
-				//      - Lat: 45.343792
-				//      - Lon: 93.58705
-				
-				// y
-				var latCoord = Math.abs(position.coords.latitude); //44.966255;
-				// x
-				var lonCoord = Math.abs(position.coords.longitude); //93.269913;
-				//http://stackoverflow.com/questions/4229662/convert-numbers-within-a-range-to-numbers-within-another-range
-				// scale = (newEnd - newStart) / (originalEnd - originalStart);
-				// finalPixel = (newStart + ((value - originalStart) * scale));
-				//alert("xxx: " + lonCoord + "  " + "yyy: " + latCoord);
-				// x
-				var lonPix = 600 - ((600/lonRange) * (lonCoord - 92.716381));// - 5;
-				// y
-				var latPix = 660 - ((660/latRange) * (latCoord - 44.661469));// - 5;
-				
-				//alert("xxx: " + lonPix + "  " + "yyy: " + latPix);
-				
-				/* */
-				if(lonPix > 600) // X
-				{
-					lonPix = 595;
-					trackerColor = '#DCDCFF';
-				}else if (lonPix < 0)
-				{
-					lonPix = 5;
-					trackerColor = '#DCDCFF';
-				}
-				
-				if(latPix < 0) // Y
-				{
-					latPix = 5;
-					trackerColor = '#DCDCFF';
-				}else if (latPix > 660)
-				{
-					latPix = 655;
-					trackerColor = '#DCDCFF';
-				}
-				
-				//alert("xxx: " + lonPix + "  " + "yyy: " + latPix);
-				
-				
-				// Draw on the canvas
-				var can = document.getElementById("trafficCanvas");
-				var canContext = can.getContext("2d");
-				//var background = new Image();
-				//background.onload = function(){};
-				//background.src = "http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png";
-				// draw stuff
-				//canContext.drawImage(background,2,2);
-				//canContext.rect(lonPix,latPix,10,10);
-				canContext.arc(lonPix, latPix, 5, 0, 2 * Math.PI, false);
-				canContext.fillStyle = trackerColor;
-				canContext.fill();
-				canContext.stroke();
-			}
-		</script>
-	</head>
-	<body onload="getLocation();">
-		<div class="parentDiv">
-			<div class="trafficDiv">
-				<canvas id="trafficCanvas" height="660"  width="600">				
-				</canvas>
-				<button type="submit">End Tracking</button>
-			</div>
-		</div>
-	</body>
+  <head>
+
+    <style>
+      div { width:600px; height:740px; }
+      .trafficDiv { width:600px; height:740px; float: left; background-image:url('http://www.dot.state.mn.us/tmc/trafficinfo/map/d_map.png'); background-repeat: no-repeat;}
+      .parentDiv { width: 1024px; height:800px; }
+
+      canvas { float: left; }
+      button { width:100px; height:75px; float:left;}
+      page {max-height:800px;}
+    </style>
+
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+    <script>
+      $(document).ready(function(){
+
+        // Create an interval to update the location
+        var myInterval;
+        function startTracking() {
+            myInterval = setInterval(function() {
+            console.log("interval");
+            getLocation();
+          }, 1000);
+        }
+
+        $('#btnStartTrack').on('click', function() {
+          startTracking();
+        });
+
+        $('#btnStopTrack').on('click', function() {
+          clearInterval(myInterval);
+        });
+
+
+      // Try auto tracking
+      $('#btnStartAutoTrack').on('click', function() {
+          trackLocation();
+      });
+      $('#btnStartAutoTrack').on('click', function() {
+          endTracking();
+      });
+
+
+        // Call get location at least once.
+        getLocation();
+        //drawLocation();
+        //alert("loaded");
+      });
+    </script>
+    <script>
+      var endTrackingWatch;
+      var countOfCalls = 0.050;
+      var trackerColor = '#1996E8';
+      var exitNum = 999;
+
+      var dotRadius = 5;
+      var imgHeight = 660;
+      var imgWidth = 600;
+
+      var imgUpLeftLat = 45.343792;
+      var imgUpLeftLon = 93.587050;
+      var imgBotRightLat = 44.661469;
+      var imgBotRightLon = 92.716381;
+
+        // Longitude --> north to south
+        // Latitude  --> east to west
+        // d_map.png corners
+        //var latRange = 45.343792 - 44.661469; // y
+        //var lonRange = 93.587050 - 92.716381; // x
+        var latRange = imgUpLeftLat - imgBotRightLat; // y
+        var lonRange = imgUpLeftLon - imgBotRightLon; // x
+
+      function getLocation()
+      {
+        if (navigator.geolocation)
+          navigator.geolocation.getCurrentPosition(drawLocation, err, {enableHighAccuracy:true, maximumAge:4000});
+        else
+          alert("You must allow location sharing.");
+      }
+
+      function err(msg)
+      {
+        alert("Error..." + msg.code + "  " + err.message);
+      }
+
+      function trackLocation()
+      {
+        if (navigator.geolocation)
+          endTrackingWatch = navigator.geolocation.watchPosition(drawLocation, err, {enableHighAccuracy:true, maximumAge:4000});
+        else
+          alert("You must allow location sharing.");
+      }
+
+      function endTracking()
+      {
+        navigator.geolocation.clearWatch(endTrackingWatch);
+      }
+
+      //
+      function drawLocation(position)
+      {
+        //TEST
+        //countOfCalls += 0.010;
+        //var latCoord = Math.abs(position.coords.latitude + countOfCalls);
+        // y
+        var latCoord = Math.abs(position.coords.latitude); //44.966255;
+        // x
+        var lonCoord = Math.abs(position.coords.longitude); //93.269913;
+        //http://stackoverflow.com/questions/4229662/convert-numbers-within-a-range-to-numbers-within-another-range
+
+        var lonPix = imgWidth - ((imgWidth/lonRange) * (lonCoord - imgBotRightLon));// - 5;
+        // y
+        var latPix = imgHeight - ((imgHeight/latRange) * (latCoord - imgBotRightLat));// - 5;
+
+
+        /* Determine if the dot is 'off' the map */
+        if(lonPix > imgWidth) // X
+        {
+          // Account for width of dot
+          lonPix = imgWidth - dotRadius;
+          trackerColor = '#DCDCFF';
+        }else if (lonPix < 0)
+        {
+          // Off the map, place near an edge.
+          lonPix = dotRadius;
+          trackerColor = '#DCDCFF';
+        }
+
+        if(latPix < 0) // Y
+        {
+          // Off the map, place near an edge;
+          latPix = dotRadius;
+          trackerColor = '#DCDCFF';
+        }else if (latPix > imgHeight)
+        {
+          // Account for height of dot
+          latPix = imgHeight;
+          trackerColor = '#DCDCFF';
+        }
+
+        // Draw on the canvas
+        var can = document.getElementById("trafficCanvas");
+        can.width = can.width;
+        var canContext = can.getContext("2d");
+        canContext.arc(lonPix, latPix, dotRadius, 0, 2 * Math.PI, false);
+        canContext.fillStyle = trackerColor;
+        canContext.fill();
+        canContext.stroke();
+      }
+    </script>
+  </head>
+  <body >
+      <div class="trafficDiv">
+        <canvas id="trafficCanvas" height="660"  width="600">
+        </canvas>
+        <button id="btnStartTrack">Start Tracking</button>
+        <button id="btnStopTrack">End Tracking</button>
+        <br/>
+        <br/>
+        <button id="btnStartAutoTrack">Start Auto Tracking</button>
+        <button id="btnStopAutoTrack">End Auto Tracking</button>
+      </div>
+  </body>
 </html>
