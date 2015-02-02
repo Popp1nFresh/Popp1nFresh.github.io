@@ -23,7 +23,7 @@
         function startTracking() {
             myInterval = setInterval(function() {
               getLocation();
-          }, 1000);
+          }, 5000);
         }
 
         var imageInterval = setInterval(function() {
@@ -83,7 +83,7 @@
       function getLocation()
       {
         if (navigator.geolocation)
-          navigator.geolocation.getCurrentPosition(drawLocation, err, {enableHighAccuracy:true, maximumAge:4000});
+          navigator.geolocation.getCurrentPosition(drawLocation, err, {enableHighAccuracy:false, maximumAge:4000});
         else
           alert("You must allow location sharing.");
       }
@@ -96,7 +96,7 @@
       function trackLocation()
       {
         if (navigator.geolocation)
-          endTrackingWatch = navigator.geolocation.watchPosition(drawLocation, err, {enableHighAccuracy:true, maximumAge:4000});
+          endTrackingWatch = navigator.geolocation.watchPosition(drawLocation, err, {enableHighAccuracy:false, maximumAge:4000});
         else
           alert("You must allow location sharing.");
       }
