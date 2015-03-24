@@ -4,6 +4,7 @@ title: Links
 ---
 
 Interesting or useful links to refer back to.
+[Clinertech (arduino projects)](http://eclipse.clinertech.com/arduino/ardu.html)
 
 ###General Reading
 * [Hackaday](http://hackaday.com/)
@@ -27,7 +28,7 @@ Interesting or useful links to refer back to.
 
 
 ###Woodworking
-* 
+*
 
 ###'Journal'
 * [Correlation != Causalityy](http://www.americanscientist.org/issues/pub/2015/1/what-everyone-should-know-about-statistical-correlation)
