@@ -4,7 +4,9 @@ title: Links
 ---
 
 Interesting or useful links to refer back to.
-[Clinertech (arduino projects)](http://eclipse.clinertech.com/arduino/ardu.html)
+<br/>
+<br/>
+[Clinertech (my arduino projects)](http://eclipse.clinertech.com/arduino/ardu.html)
 
 ###General Reading
 * [Hackaday](http://hackaday.com/)
@@ -42,4 +44,4 @@ Interesting or useful links to refer back to.
 * [Jekyll Introduction](http://jekyllbootstrap.com/usage/jekyll-quick-start.html)
 
 
-Last Updated: 29 Dec 2014
+Last Updated: 23 Mar 2015
